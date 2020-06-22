@@ -1,0 +1,16 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          #配置github
+          uri: https://gitee.com/wyc5510/wyc.git
+          #配置搜索目录
+          search-paths:
+            - configfiles
+      #配置分支
+      label: test

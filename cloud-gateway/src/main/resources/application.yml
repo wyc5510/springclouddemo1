@@ -1,0 +1,42 @@
+spring:
+ application:
+   name: cloud-gateway
+   cloud:
+     gateway:
+       #通过服务名称访问微服务
+       discovery:
+         locator:
+           enabled:true
+server:
+  port: 8200
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+
+
+  cloud:
+    gateway:
+      routes:
+        #gateway网关的唯一标识
+        - id: orderService
+          #后端微服务的名称，和注册中心的名称一致
+          uri: lb://SERVICE-ORDER
+          #断言策略，根据path断言
+          predicates:
+            - Path=/api/order/**
+          #去除前缀
+          filters:
+            - StripPrefix=1
+          #gateway网关的唯一标识
+        - id: userService
+          #后端微服务的名称，和注册中心的名称一致
+          uri: lb://SERVICE-USER
+          #断言策略，根据path断言
+          predicates:
+            - Path=/api/user/**
+          #去除前缀
+          filters:
+            - StripPrefix=1
+  profiles: route
